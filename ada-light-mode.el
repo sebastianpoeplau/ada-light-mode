@@ -6,6 +6,7 @@
 ;; Keywords: languages
 ;; URL: https://github.com/sebastianpoeplau/ada-light-mode
 ;; Version: 0.1
+;; Package-Requires: ((emacs "24.3"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -47,8 +48,8 @@
 (defvar ada-light-mode--font-lock-rules
   (list (regexp-opt ada-light-mode-keywords 'symbols))
   "Rules for search-based fontification in `ada-light-mode'.
-
 The format is appropriate for `font-lock-keywords'.")
+
 (defvar ada-light-mode-syntax-table     ; used automatically by define-derived-mode
   (let ((table (make-syntax-table)))
     ;; Comments start with "--".
@@ -93,8 +94,8 @@ The format is appropriate for `font-lock-keywords'.")
           "is")
      1))
   "Imenu configuration for `ada-light-mode'.
-
 The format is appropriate for `imenu-generic-expression'.")
+
 (defun ada-light-mode--indent-line ()
   "Indent a single line of Ada code."
   ;; This is a really dumb implementation which just indents to the most recent
@@ -132,7 +133,7 @@ It doesn't define any keybindings. In comparison with `ada-mode',
 
 ;; Register the mode for Ada code following GNAT naming conventions.
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.ad[bs]" . ada-light-mode))
+(add-to-list 'auto-mode-alist '("\\.ad[bs]\\'" . ada-light-mode))
 
 ;; Configure eglot if available.
 (defvar eglot-server-programs)
