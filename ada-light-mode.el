@@ -24,7 +24,7 @@
 
 ;;; Commentary:
 
-;; This is a light-weight major mode for the Ada programming language. In
+;; This is a lightweight major mode for the Ada programming language. In
 ;; contrast to ada-mode, it doesn't require a precompiled parser, and it doesn't
 ;; do any intensive processing. As a consequence, it is faster but less
 ;; accurate.
