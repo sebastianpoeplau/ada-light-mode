@@ -53,7 +53,7 @@ The format is appropriate for `font-lock-keywords'.")
 (defvar ada-light-mode-syntax-table     ; used automatically by define-derived-mode
   (let ((table (make-syntax-table)))
     ;; Comments start with "--".
-    (modify-syntax-entry ?- "< 12" table)
+    (modify-syntax-entry ?- ". 12" table)
     ;; Newlines end comments.
     (modify-syntax-entry ?\n ">" table)
     (modify-syntax-entry ?\r ">" table)
