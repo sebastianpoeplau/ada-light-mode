@@ -60,6 +60,20 @@ The format is appropriate for `font-lock-keywords'.")
     table)
   "Syntax table used in `ada-light-mode'.")
 
+(defun ada-light-mode--syntax-propertize (start end)
+  "Apply syntax properties to the region from START to END."
+  ;; Ada delimits character literals with single quotes, but also uses the
+  ;; single quote for other purposes. Since character literals are always
+  ;; exactly one character long (i.e., there are no escape sequences), we can
+  ;; easily find them with a regular expression and change the syntax class of
+  ;; the enclosing single quotes to "generic string". This also nicely handles
+  ;; the case of '"': generic string delimiters only match other generic string
+  ;; delimiters, but not ordinary quote characters (i.e., the double quote).
+  (goto-char start)
+  (while-let ((pos (re-search-forward "'.'" end t)))
+    (put-text-property (- pos 3) (- pos 2) 'syntax-table '(15))
+    (put-text-property (- pos 1) pos 'syntax-table '(15))))
+
 (defvar ada-light-mode--imenu-rules
   `(("Functions"
      ,(rx bol
@@ -124,7 +138,8 @@ It doesn't define any keybindings. In comparison with `ada-mode',
               comment-padding 2)
 
   ;; Set up fontification.
-  (setq-local font-lock-defaults '(ada-light-mode--font-lock-rules nil t))
+  (setq-local font-lock-defaults '(ada-light-mode--font-lock-rules nil t)
+              syntax-propertize-function #'ada-light-mode--syntax-propertize)
 
   ;; And finally, configure imenu and indentation.
   (setq-local imenu-generic-expression ada-light-mode--imenu-rules
