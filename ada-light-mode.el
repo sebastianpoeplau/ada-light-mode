@@ -153,8 +153,7 @@ It doesn't define any keybindings. In comparison with `ada-mode',
 (add-to-list 'auto-mode-alist '("\\.ad[bs]\\'" . ada-light-mode))
 
 ;; Configure eglot if available.
-(defvar eglot-server-programs)
-(when (require 'eglot nil t)
+(with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs '(ada-light-mode "ada_language_server")))
 
 (provide 'ada-light-mode)
