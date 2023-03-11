@@ -6,7 +6,7 @@
 ;; Keywords: languages
 ;; URL: https://github.com/sebastianpoeplau/ada-light-mode
 ;; Version: 0.1
-;; Package-Requires: ((emacs "24.3"))
+;; Package-Requires: ((emacs "24.3") (compat "29.1"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -31,6 +31,8 @@
 ;; accurate.
 
 ;;; Code:
+
+(require 'compat)                       ; for while-let
 
 (defvar ada-light-mode-keywords
   ;; https://www.adaic.org/resources/add_content/standards/05rm/html/RM-2-9.html

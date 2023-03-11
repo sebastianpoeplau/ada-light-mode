@@ -1,8 +1,9 @@
 # A lightweight Ada mode for Emacs
 
 `ada-light-mode` is a very light alternative to
-[`ada-mode`](https://www.nongnu.org/ada-mode/). It doesn't have any dependencies
-and aims to be easy to set up, fast, and reliable.
+[`ada-mode`](https://www.nongnu.org/ada-mode/). It depends only on the `compat`
+library for compatibility with older Emacs versions, and it aims to be easy to
+set up, fast, and reliable.
 
 ## Features
 
