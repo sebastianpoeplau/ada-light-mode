@@ -59,6 +59,8 @@ The format is appropriate for `font-lock-keywords'.")
     ;; Newlines end comments.
     (modify-syntax-entry ?\n ">" table)
     (modify-syntax-entry ?\r ">" table)
+    ;; Backslash is a regular symbol, not an escape character.
+    (modify-syntax-entry ?\\ "_" table)
     table)
   "Syntax table used in `ada-light-mode'.")
 
