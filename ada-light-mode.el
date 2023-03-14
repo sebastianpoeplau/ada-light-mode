@@ -145,10 +145,12 @@ It doesn't define any keybindings. In comparison with `ada-mode',
   (setq-local font-lock-defaults '(ada-light-mode--font-lock-rules nil t)
               syntax-propertize-function #'ada-light-mode--syntax-propertize)
 
-  ;; And finally, configure imenu and indentation.
+  ;; And finally, configure imenu and indentation. Since our indentation
+  ;; function isn't particularly good, don't force it upon the user.
   (setq-local imenu-generic-expression ada-light-mode--imenu-rules
               standard-indent 3
-              indent-line-function 'ada-light-mode--indent-line))
+              indent-line-function 'ada-light-mode--indent-line
+              electric-indent-inhibit t))
 
 ;; Register the mode for Ada code following GNAT naming conventions.
 ;;;###autoload
