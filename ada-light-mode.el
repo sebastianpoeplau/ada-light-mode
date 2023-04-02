@@ -158,7 +158,25 @@ It doesn't define any keybindings. In comparison with `ada-mode',
 
 ;; Configure eglot if available.
 (with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs '(ada-light-mode "ada_language_server")))
+  (add-to-list 'eglot-server-programs '(ada-light-mode "ada_language_server"))
+
+  (defun ada-light-other-file ()
+    "Jump from spec to body or vice versa using the Ada Language Server."
+    (interactive)
+    (if-let ((server (eglot-current-server)))
+        (eglot-execute-command server
+                               "als-other-file"
+                               (vector (eglot--TextDocumentIdentifier)))
+      (message "%s" "Not connected to the Ada Language Server")))
+
+  ;; The "als-other-file" command used by `ada-light-other-file' requires
+  ;; support for the "window/showDocument" server request in eglot; add it if
+  ;; necessary.
+  (unless (cl-find-method 'eglot-handle-request nil '(t (eql window/showDocument)))
+    (cl-defmethod eglot-handle-request
+      (_server (_method (eql window/showDocument)) &key uri &allow-other-keys)
+      (find-file (eglot--uri-to-path uri))
+      (list :success t))))
 
 (provide 'ada-light-mode)
 ;;; ada-light-mode.el ends here

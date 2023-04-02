@@ -41,6 +41,11 @@ the Ada project definition:
 
 Finally, open a source file and run `M-x eglot` to start the language server.
 
+The Ada language server exposes a custom command `als-other-file` that lets you
+jump between specification and body files; use it with `M-x
+ada-light-other-file` (after starting `eglot`) or bind the command to a key for
+easy access.
+
 ## License
 
 This program is free software: you can redistribute it and/or modify it under
