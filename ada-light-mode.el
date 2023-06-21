@@ -154,7 +154,7 @@ It doesn't define any keybindings. In comparison with `ada-mode',
 
 ;; Register the mode for Ada code following GNAT naming conventions.
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.ad[bs]\\'" . ada-light-mode))
+(add-to-list 'auto-mode-alist '("\\.ad[bcs]\\'" . ada-light-mode))
 
 ;; Configure eglot if available.
 (with-eval-after-load 'eglot
