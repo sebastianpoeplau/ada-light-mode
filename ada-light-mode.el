@@ -5,7 +5,7 @@
 ;; Author: Sebastian Poeplau <sebastian.poeplau@mailbox.org>
 ;; Keywords: languages
 ;; URL: https://github.com/sebastianpoeplau/ada-light-mode
-;; Version: 0.1
+;; Version: 0.2
 ;; Package-Requires: ((emacs "24.3") (compat "29.1"))
 
 ;; This file is not part of GNU Emacs.
