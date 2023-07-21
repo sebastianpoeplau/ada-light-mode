@@ -5,7 +5,7 @@
 ;; Author: Sebastian Poeplau <sebastian.poeplau@mailbox.org>
 ;; Keywords: languages
 ;; URL: https://github.com/sebastianpoeplau/ada-light-mode
-;; Version: 0.1
+;; Version: 0.2
 ;; Package-Requires: ((emacs "24.3") (compat "29.1"))
 
 ;; This file is not part of GNU Emacs.
@@ -63,6 +63,11 @@ The format is appropriate for `font-lock-keywords'.")
     (modify-syntax-entry ?\\ "_" table)
     table)
   "Syntax table used in `ada-light-mode'.")
+
+(defvar ada-light-mode-other-file-alist
+  '(("\\.ads\\'" (".adb"))
+    ("\\.adb\\'" (".ads")))
+  "Value for `ff-other-file-alist' in `ada-light-mode'.")
 
 (defun ada-light-mode--syntax-propertize (start end)
   "Apply syntax properties to the region from START to END."
@@ -144,6 +149,9 @@ It doesn't define any keybindings. In comparison with `ada-mode',
   ;; Set up fontification.
   (setq-local font-lock-defaults '(ada-light-mode--font-lock-rules nil t)
               syntax-propertize-function #'ada-light-mode--syntax-propertize)
+
+  ;; ff-find-other-file local customization.
+  (setq-local ff-other-file-alist ada-light-mode-other-file-alist)
 
   ;; And finally, configure imenu and indentation. Since our indentation
   ;; function isn't particularly good, don't force it upon the user.
