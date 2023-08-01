@@ -103,6 +103,7 @@ The format is appropriate for `font-lock-keywords'.")
     ("Types"
      ,(rx bol
           (* space)
+          (? "sub")
           "type"
           (+ space)
           (group (+ (or word (syntax symbol)))))
