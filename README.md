@@ -41,6 +41,17 @@ the Ada project definition:
 
 Finally, open a source file and run `M-x eglot` to start the language server.
 
+When `eglot` is active, indentation uses the language server's formatting
+capabilities to indent code (i.e.,
+[`textDocument.rangeFormatting`](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_rangeFormatting)).
+It actually does a bit more than that, possibly breaking the to-be-indented
+line up into multiple lines if that's how the language server suggests to
+format it. Note that the Ada language server sometimes modifies code beyond the
+current line in response to such a request. This can be especially confusing
+when you simply inserted a newline - automatic indentation of the just-finished
+line triggers the undesired behavior. In such cases, you can insert the newline
+with `C-j` to circumvent automatic indentation.
+
 The Ada language server exposes a custom command `als-other-file` that lets you
 jump between specification and body files; use it with `M-x
 ada-light-other-file` (after starting `eglot`) or bind the command to a key for

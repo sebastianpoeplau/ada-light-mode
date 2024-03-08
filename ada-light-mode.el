@@ -158,6 +158,7 @@ It doesn't define any keybindings. In comparison with `ada-mode',
   ;; function isn't particularly good, don't force it upon the user.
   (setq-local imenu-generic-expression ada-light-mode--imenu-rules
               standard-indent 3
+              tab-width 3               ; used by eglot for range formatting
               indent-line-function 'ada-light-mode--indent-line
               electric-indent-inhibit t))
 
@@ -185,7 +186,41 @@ It doesn't define any keybindings. In comparison with `ada-mode',
     (cl-defmethod eglot-handle-request
       (_server (_method (eql window/showDocument)) &key uri &allow-other-keys)
       (find-file (eglot--uri-to-path uri))
-      (list :success t))))
+      (list :success t)))
+
+  (defun ada-light-mode--current-line-empty-p ()
+    (save-excursion
+      (beginning-of-line)
+      (looking-at-p (rx (* space) eol))))
+
+  (defun ada-light-indent-line ()
+    "Indent the current line using the Ada Language Server."
+    (interactive)
+    (if (ada-light-mode--current-line-empty-p)
+        ;; Let's not "indent" empty lines with the language server, it would
+        ;; just delete them. Instead, take a guess at the required indentation
+        ;; based on the most recent non-empty line.
+        (indent-relative t t)
+      (condition-case err
+          (eglot-format (line-beginning-position) (line-end-position))
+        ;; When `eglot-format' fails due to a server issue it signals the
+        ;; underlying `jsonrpc-error'. In this case, let's return normally to
+        ;; give completion a chance.
+        (jsonrpc-error
+         (when-let ((msg (alist-get 'jsonrpc-error-message (cdr err))))
+           (message "Language server error: %s" msg))
+         nil))))
+
+  (defun ada-light-mode--eglot-setup ()
+    "Set up `eglot' integration for `ada-light-mode'."
+    (when (eq major-mode 'ada-light-mode)
+      (if (eglot-managed-p)
+          (setq-local indent-line-function 'ada-light-indent-line
+                      electric-indent-inhibit nil)
+        (setq-local indent-line-function 'ada-light-mode--indent-line
+                    electric-indent-inhibit t))))
+
+  (add-hook 'eglot-managed-mode-hook #'ada-light-mode--eglot-setup))
 
 (provide 'ada-light-mode)
 ;;; ada-light-mode.el ends here
