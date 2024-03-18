@@ -137,11 +137,8 @@ The format is appropriate for `imenu-generic-expression'.")
         (save-excursion (indent-line-to indent))))))
 
 ;;;###autoload
-(define-derived-mode ada-light-mode prog-mode "AdaL"
-  "Major mode for the Ada programming language.
-
-It doesn't define any keybindings. In comparison with `ada-mode',
-`ada-light-mode' is faster but less accurate."
+(define-derived-mode ada-light-base-mode prog-mode "AdaLBase"
+  "Base mode for `ada-light-mode' and `gpr-light-mode'."
   ;; Set up commenting; Ada uses "--" followed by two spaces.
   (setq-local comment-use-syntax t
               comment-start "--"
@@ -151,24 +148,39 @@ It doesn't define any keybindings. In comparison with `ada-mode',
   (setq-local font-lock-defaults '(ada-light-mode--font-lock-rules nil t)
               syntax-propertize-function #'ada-light-mode--syntax-propertize)
 
-  ;; ff-find-other-file local customization.
-  (setq-local ff-other-file-alist ada-light-mode-other-file-alist)
-
-  ;; And finally, configure imenu and indentation. Since our indentation
-  ;; function isn't particularly good, don't force it upon the user.
-  (setq-local imenu-generic-expression ada-light-mode--imenu-rules
-              standard-indent 3
+  ;; And finally, configure indentation. Since our indentation function isn't
+  ;; particularly good, don't force it upon the user.
+  (setq-local standard-indent 3
               tab-width 3               ; used by eglot for range formatting
               indent-line-function 'ada-light-mode--indent-line
               electric-indent-inhibit t))
 
+;;;###autoload
+(define-derived-mode ada-light-mode ada-light-base-mode "AdaL"
+  "Major mode for the Ada programming language.
+
+It doesn't define any keybindings. In comparison with `ada-mode',
+`ada-light-mode' is faster but less accurate."
+  (setq-local ff-other-file-alist ada-light-mode-other-file-alist
+              imenu-generic-expression ada-light-mode--imenu-rules))
+
+;;;###autoload
+(define-derived-mode gpr-light-mode ada-light-base-mode "GPRL"
+  "Major mode for GPR project files.")
+
 ;; Register the mode for Ada code following GNAT naming conventions.
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.ad[bcs]\\'" . ada-light-mode))
+(progn (add-to-list 'auto-mode-alist '("\\.ad[bcs]\\'" . ada-light-mode))
+       (add-to-list 'auto-mode-alist '("\\.gpr\\'" . gpr-light-mode)))
 
 ;; Configure eglot if available.
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs '(ada-light-mode "ada_language_server"))
+
+  ;; The Ada Language Server doesn't support formatting .gpr files, but it
+  ;; provides completion and detects syntax errors.
+  (add-to-list 'eglot-server-programs
+               '(gpr-light-mode "ada_language_server" "--language-gpr"))
 
   (defun ada-light-other-file ()
     "Jump from spec to body or vice versa using the Ada Language Server."
