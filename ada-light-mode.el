@@ -193,7 +193,7 @@ It doesn't define any keybindings. In comparison with `ada-mode',
       (beginning-of-line)
       (looking-at-p (rx (* space) eol))))
 
-  (defun ada-light-indent-line ()
+  (defun ada-light-mode--indent-line-eglot ()
     "Indent the current line using the Ada Language Server."
     (interactive)
     (if (ada-light-mode--current-line-empty-p)
@@ -215,7 +215,7 @@ It doesn't define any keybindings. In comparison with `ada-mode',
     "Set up `eglot' integration for `ada-light-mode'."
     (when (eq major-mode 'ada-light-mode)
       (if (eglot-managed-p)
-          (setq-local indent-line-function 'ada-light-indent-line
+          (setq-local indent-line-function 'ada-light-mode--indent-line-eglot
                       electric-indent-inhibit nil)
         (setq-local indent-line-function 'ada-light-mode--indent-line
                     electric-indent-inhibit t))))
