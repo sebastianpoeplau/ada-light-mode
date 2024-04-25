@@ -166,7 +166,8 @@ It doesn't define any keybindings. In comparison with `ada-mode',
 
 ;;;###autoload
 (define-derived-mode gpr-light-mode ada-light-base-mode "GPRL"
-  "Major mode for GPR project files.")
+  "Major mode for GPR project files."
+  :syntax-table ada-light-mode-syntax-table)
 
 ;; Register the mode for Ada code following GNAT naming conventions.
 ;;;###autoload
