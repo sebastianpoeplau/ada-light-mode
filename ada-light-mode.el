@@ -171,17 +171,18 @@ It doesn't define any keybindings. In comparison with `ada-mode',
 
 ;; Register the mode for Ada code following GNAT naming conventions.
 ;;;###autoload
-(progn (add-to-list 'auto-mode-alist '("\\.ad[bcs]\\'" . ada-light-mode))
+(progn (add-to-list 'auto-mode-alist '("\\.ad[abcs]\\'" . ada-light-mode))
        (add-to-list 'auto-mode-alist '("\\.gpr\\'" . gpr-light-mode)))
 
 ;; Configure eglot if available.
 (with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs '(ada-light-mode "ada_language_server"))
+  (add-to-list 'eglot-server-programs '((ada-light-mode :language-id "ada")
+                                        "ada_language_server"))
 
   ;; The Ada Language Server doesn't support formatting .gpr files, but it
   ;; provides completion and detects syntax errors.
-  (add-to-list 'eglot-server-programs
-               '(gpr-light-mode "ada_language_server" "--language-gpr"))
+  (add-to-list 'eglot-server-programs '((gpr-light-mode :language-id "ada")
+                                        "ada_language_server" "--language-gpr"))
 
   (defun ada-light-other-file ()
     "Jump from spec to body or vice versa using the Ada Language Server."
