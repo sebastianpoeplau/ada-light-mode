@@ -52,6 +52,15 @@ when you simply inserted a newline - automatic indentation of the just-finished
 line triggers the undesired behavior. In such cases, you can insert the newline
 with `C-j` to circumvent automatic indentation.
 
+The Ada language server uses on-type formatting to insert space characters
+whenever you type a newline. This behavior doesn't work well with Emacs' own
+indentation logic; the language server's space characters end up _after_ point.
+You may want to disable on-type formatting to work around this issue:
+
+``` emacs-lisp
+(push :documentOnTypeFormattingProvider eglot-ignored-server-capabilities)
+```
+
 The Ada language server exposes a custom command `als-other-file` that lets you
 jump between specification and body files; use it with `M-x
 ada-light-other-file` (after starting `eglot`) or bind the command to a key for
